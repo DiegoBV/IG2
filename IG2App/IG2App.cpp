@@ -14,9 +14,17 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
   {
     getRoot()->queueEndRendering();
   }
+  else if (evt.keysym.sym == SDLK_p) {
+	  rotateGrid();
+  }
   //else if (evt.keysym.sym == SDLK_???)
   
   return true;
+}
+
+void IG2App::rotateGrid()
+{
+	mGridNode->pitch(Ogre::Radian(0.1));
 }
 
 void IG2App::shutdown()
@@ -92,11 +100,12 @@ void IG2App::setupScene(void)
 
   // finally something to render
 
-  Ogre::MeshManager::getSingleton().createPlane("mPlane1080x800", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, Plane(Vector3::UNIT_Y, 0), 1080, 800, 100, 80, true, 1, 1.0, 1.0, Vector3::UNIT_Z); //crea el mesh
+  Ogre::MeshManager::getSingleton().createPlane("mPlane1080x800", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, Plane(Vector3::UNIT_Y, 0), 1080, 800, 100, 80, true, 1, 1.0, 1.0, Vector3::NEGATIVE_UNIT_Z); //crea el mesh
   Ogre::Entity* plano = mSM->createEntity("mPlane1080x800"); //añadimos a una entity el mesh
 
   mGridNode = mSM->getRootSceneNode()->createChildSceneNode("mGrid"); //crea hijo del arbol de recursos y se lo asigna al puntero del nodo
   mGridNode->attachObject(plano); //añadir el objeto al nodo
+  plano->setMaterialName("Plano");
   //mGridNode->showBoundingBox(true);
 
   Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
@@ -114,6 +123,7 @@ void IG2App::setupScene(void)
   toy = mGridNode->createChildSceneNode("toy");
   Toy* t = new Toy(toy);
   toy->setPosition(0, 100, 0);
+  addInputListener(t); //lo añadimos como listener para que reciba los eventos de teclado
 
   //------------------------------------------------------------------------
 

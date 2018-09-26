@@ -1,0 +1,14 @@
+material Plano {
+    technique { // first, preferred technique
+        pass { // first pass
+            diffuse 0.5 0.5 0.5
+            ambient 0.5 0.5 0.5
+            specular 0.5 0.5 0.5 100
+            texture_unit {
+                texture 1d_debug.png
+                colour_op add
+                scroll_anim 0.1 0.0
+            }
+        }
+    }
+}

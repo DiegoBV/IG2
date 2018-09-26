@@ -20,6 +20,8 @@ protected:
   virtual void setupScene();
 
   virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener
+
+  void rotateGrid();
    
   //nodos del arbol de recursos
   Ogre::SceneManager* mSM = nullptr;
