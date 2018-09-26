@@ -3,48 +3,45 @@
 
 Toy::Toy(Ogre::SceneNode * node): pNode(node)
 {
-	//pNode->setScale(15, 15, 15);
+	//cuerpo
+	body = pNode->createChildSceneNode("body"); // se hace hijo del nodo padre (pNode)
+	Ogre::Entity* b = pNode->getCreator()->createEntity("sphere.mesh"); //se crea una entidad accediendo al creador del nodo padre
+	body->attachObject(b); //se vincula la entidad al nodo
 
-	body = pNode->createChildSceneNode("body"); //body
-	Ogre::Entity* b = pNode->getCreator()->createEntity("sphere.mesh");
-	body->attachObject(b);
-
-	head = pNode->createChildSceneNode("head"); //head
+	//cabeza
+	head = pNode->createChildSceneNode("head");
 	Ogre::Entity* h = pNode->getCreator()->createEntity("sphere.mesh");
 	head->attachObject(h);
 	head->setPosition(0, 140, 0);
-
 	head->setScale(body->getInitialScale().x * 0.5, body->getInitialScale().y * 0.5, body->getInitialScale().z * 0.5);
 
-
-
-	rEye= head->createChildSceneNode("rEye");//rEye
+	//ojo derecho
+	rEye= head->createChildSceneNode("rEye");
 	Ogre::Entity* rE = pNode->getCreator()->createEntity("sphere.mesh");
 	rEye->attachObject(rE);
 	rEye->setScale(.2, .2, .2);
 	rEye->setPosition(25, 0, 100);
 
-	lEye = head->createChildSceneNode("lEye");//lEye
+	//ojo izquierdo
+	lEye = head->createChildSceneNode("lEye");
 	Ogre::Entity* lE = pNode->getCreator()->createEntity("sphere.mesh");
 	lEye->attachObject(lE);
 	lEye->setScale(.2, .2, .2);
 	lEye->setPosition(-25, 0, 100);
 
+	//ombligo
 	bButton= body->createChildSceneNode("bButton");
 	Ogre::Entity* bB = pNode->getCreator()->createEntity("sphere.mesh");
 	bButton->attachObject(bB);
 	bButton->setPosition(0, 0, 100);
 	bButton->setScale(.1, .1, .1);
-
-	/*head->setPosition(0, 100, 0);
-	body->setPosition(0, 50, 0);*/
 }
 
 void Toy::frameRendered(const Ogre::FrameEvent & evt)
 {
-	if (on) {
-		movement(evt.timeSinceLastFrame);
-		rotateBody_Head();
+	if (on) { //si esta en movimiento
+		movement(evt.timeSinceLastFrame); //lo mueve de acuerdo al tiempo para velocidad constante
+		rotateBody_Head(); //rota cabeza y cuerpo
 	}
 }
 
@@ -53,13 +50,13 @@ bool Toy::keyPressed(const OgreBites::KeyboardEvent & evt)
 	switch (evt.keysym.sym)
 	{
 	case SDLK_t:
-		if (!on) { movement(1); rotateBody_Head(); }
+		if (!on) { movement(1); rotateBody_Head(); } // si no está en movimiento, para el movimiento discreto
 		break;
 	case SDLK_y:
-		on = !on;
+		on = !on; //activa el booleano
 		break;
 	case SDLK_v:
-		rotateDirection();
+		rotateDirection(); //rota el nodo padre para que rote la direccion 
 		break;
 	//more cases
 	default:

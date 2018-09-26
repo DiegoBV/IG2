@@ -22,7 +22,7 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
   return true;
 }
 
-void IG2App::rotateGrid()
+void IG2App::rotateGrid() //rota el plano
 {
 	mGridNode->pitch(Ogre::Radian(0.1));
 }
