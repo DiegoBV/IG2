@@ -1,38 +1,28 @@
 #include "Toy.h"
 
 
-Toy::Toy(Ogre::SceneNode * node): pNode(node)
+Toy::Toy(Ogre::SceneNode * node): AppObj(node)
 {
 	//cuerpo
-	body = pNode->createChildSceneNode("body"); // se hace hijo del nodo padre (pNode)
-	Ogre::Entity* b = pNode->getCreator()->createEntity("sphere.mesh"); //se crea una entidad accediendo al creador del nodo padre
-	body->attachObject(b); //se vincula la entidad al nodo
+	body = addChild("body", "sphere.mesh");
 
 	//cabeza
-	head = pNode->createChildSceneNode("head");
-	Ogre::Entity* h = pNode->getCreator()->createEntity("sphere.mesh");
-	head->attachObject(h);
+	head = addChild("head", "sphere.mesh");
 	head->setPosition(0, 140, 0);
 	head->setScale(body->getInitialScale().x * 0.5, body->getInitialScale().y * 0.5, body->getInitialScale().z * 0.5);
 
 	//ojo derecho
-	rEye= head->createChildSceneNode("rEye");
-	Ogre::Entity* rE = pNode->getCreator()->createEntity("sphere.mesh");
-	rEye->attachObject(rE);
+	Ogre::SceneNode* rEye = addChild("rEye", "sphere.mesh", head);
 	rEye->setScale(.2, .2, .2);
 	rEye->setPosition(25, 0, 100);
 
 	//ojo izquierdo
-	lEye = head->createChildSceneNode("lEye");
-	Ogre::Entity* lE = pNode->getCreator()->createEntity("sphere.mesh");
-	lEye->attachObject(lE);
+	Ogre::SceneNode* lEye = addChild("lEye", "sphere.mesh", head);
 	lEye->setScale(.2, .2, .2);
 	lEye->setPosition(-25, 0, 100);
 
 	//ombligo
-	bButton= body->createChildSceneNode("bButton");
-	Ogre::Entity* bB = pNode->getCreator()->createEntity("sphere.mesh");
-	bButton->attachObject(bB);
+	Ogre::SceneNode* bButton = addChild("bButton", "sphere.mesh", body);
 	bButton->setPosition(0, 0, 100);
 	bButton->setScale(.1, .1, .1);
 }
@@ -68,13 +58,13 @@ bool Toy::keyPressed(const OgreBites::KeyboardEvent & evt)
 void Toy::movement(Ogre::Real time)
 {
 	//movimiento del objeto completo
-	pNode->translate(0, 0, vel * time, Ogre::Node::TS_LOCAL); //si no se hace en local, por defecto es relativo al padre y no se
+	getMainNode()->translate(0, 0, vel * time, Ogre::Node::TS_LOCAL); //si no se hace en local, por defecto es relativo al padre y no se
 	//aplican las rotaciones previas
 }
 
 void Toy::rotateDirection()
 {
-	pNode->yaw(Ogre::Degree(45)); //rotacion de 45 grados, local por defecto
+	getMainNode()->yaw(Ogre::Degree(45)); //rotacion de 45 grados, local por defecto
 }
 
 void Toy::rotateBody_Head()

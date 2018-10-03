@@ -1,22 +1,12 @@
-#include "IG2ApplicationContext.h"
-#include <OgreSceneManager.h>
-#include <OgreSceneNode.h>
-#include <OgreTrays.h>
-#include <OgreCameraMan.h>
-#include <OgreEntity.h>
-#include <OgreMeshManager.h>
+#include "AppObj.h"
 
 #pragma once
-class Toy: public OgreBites::InputListener
+class Toy: public AppObj
 {
 private:
 	const Ogre::Real vel = 100;
-	Ogre::SceneNode* pNode;
 	Ogre::SceneNode* head;
 	Ogre::SceneNode* body;
-	Ogre::SceneNode* rEye;
-	Ogre::SceneNode* lEye;
-	Ogre::SceneNode* bButton;
 
 	bool on = false;
 
@@ -30,6 +20,8 @@ public:
 	Toy(Ogre::SceneNode* node);
 	virtual void frameRendered(const Ogre::FrameEvent & evt);
 	virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);
+
+	InputListener* getTrueSelf() { return this; };
 };
 
 // roll -> rota eje z

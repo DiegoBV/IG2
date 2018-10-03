@@ -5,6 +5,9 @@
 #include <SDL_keycode.h>
 #include <OgreMeshManager.h>
 #include "Toy.h"
+#include "Mirror.h"
+
+
 
 using namespace Ogre;
 
@@ -29,16 +32,20 @@ void IG2App::rotateGrid() //rota el plano
 
 void IG2App::shutdown()
 {
-  mShaderGenerator->removeSceneManager(mSM);  
-  mSM->removeRenderQueueListener(mOverlaySystem);  
-					
-  mRoot->destroySceneManager(mSM);  
+	for (AppObj* obj : actors) {
+		delete obj;
+	}
 
-  delete mTrayMgr;  mTrayMgr = nullptr;
-  delete mCamMgr; mCamMgr = nullptr;
-  
-  // do not forget to call the base 
-  IG2ApplicationContext::shutdown();
+	mShaderGenerator->removeSceneManager(mSM);
+	mSM->removeRenderQueueListener(mOverlaySystem);
+
+	mRoot->destroySceneManager(mSM);
+
+	delete mTrayMgr;  mTrayMgr = nullptr;
+	delete mCamMgr; mCamMgr = nullptr;
+
+	// do not forget to call the base 
+	IG2ApplicationContext::shutdown();
 }
 
 void IG2App::setup(void)
@@ -100,18 +107,21 @@ void IG2App::setupScene(void)
 
   // finally something to render
 
-  Ogre::MeshManager::getSingleton().createPlane("mPlane1080x800", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, Plane(Vector3::UNIT_Y, 0), 1080, 800, 100, 80, true, 1, 1.0, 1.0, Vector3::NEGATIVE_UNIT_Z); //crea el mesh
-  Ogre::Entity* plano = mSM->createEntity("mPlane1080x800"); //añadimos a una entity el mesh
+  actors.push_back(new Mirror(mSM->getRootSceneNode(), "mGrid", "Plano"));
+  mGridNode = dynamic_cast<Mirror*>(actors.back())->getMirror();
+  mGridNode->showBoundingBox(true);
 
-  mGridNode = mSM->getRootSceneNode()->createChildSceneNode("mGrid"); //crea hijo del arbol de recursos y se lo asigna al puntero del nodo
-  mGridNode->attachObject(plano); //añadir el objeto al nodo
-  plano->setMaterialName("Plano");
-  //mGridNode->showBoundingBox(true);
 
-  Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
+//------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  mSinbadNode = mGridNode->createChildSceneNode("nSinbad"); //Asignamos mSinbadNode  como hijo de mGridNode con el valor de nSinbad 
-  mSinbadNode->attachObject(ent);
+
+  //Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
+
+  //mSinbadNode = mGridNode->createChildSceneNode("nSinbad"); //Asignamos mSinbadNode  como hijo de mGridNode con el valor de nSinbad 
+  //mSinbadNode->attachObject(ent);
+  actors.push_back(new AppObj(mGridNode));
+  mSinbadNode = actors.back()->addChild("nSinbad", "Sinbad.mesh");
+  
 
   mSinbadNode->setPosition(400, 100, -300);
   mSinbadNode->setOrientation(0, 0, 180, 0);
@@ -121,9 +131,9 @@ void IG2App::setupScene(void)
   //mSinbadNode->setVisible(false);
 
   toy = mGridNode->createChildSceneNode("toy");
-  Toy* t = new Toy(toy);
+  actors.push_back(new Toy(toy));
   toy->setPosition(0, 100, 0);
-  addInputListener(t); //lo añadimos como listener para que reciba los eventos de teclado
+  addInputListener(actors.back()); //lo añadimos como listener para que reciba los eventos de teclado
 
   //------------------------------------------------------------------------
 

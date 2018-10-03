@@ -6,7 +6,8 @@
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
 #include <OgreCameraMan.h>
-
+#include <vector>
+#include "AppObj.h"
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener 
 {
@@ -32,6 +33,8 @@ protected:
   Ogre::SceneNode* mGridNode = nullptr;
   Ogre::SceneNode* toy = nullptr;
   OgreBites::CameraMan* mCamMgr = nullptr;
+
+  std::vector<AppObj*> actors;
  
 };
 

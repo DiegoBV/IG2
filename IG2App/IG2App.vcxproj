@@ -119,14 +119,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AppObj.h" />
     <ClInclude Include="IG2ApplicationContext.h" />
     <ClInclude Include="IG2App.h" />
+    <ClInclude Include="Mirror.h" />
     <ClInclude Include="Toy.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AppObj.cpp" />
     <ClCompile Include="IG2ApplicationContext.cpp" />
     <ClCompile Include="IG2Main.cpp" />
     <ClCompile Include="IG2App.cpp" />
+    <ClCompile Include="Mirror.cpp" />
     <ClCompile Include="Toy.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
