@@ -1,4 +1,5 @@
 #include "AppObj.h"
+#include <iostream>
 
 Ogre::SceneNode* AppObj::addChild(std::string name, std::string material)
 {
@@ -13,7 +14,7 @@ Ogre::SceneNode* AppObj::addChild(std::string name, std::string material)
 	return child;
 }
 
-Ogre::SceneNode * AppObj::addChild(std::string name, std::string material, Ogre::SceneNode * father)
+Ogre::SceneNode * AppObj::addChild(std::string name, std::string material, Ogre::SceneNode * father, Ogre::Entity* entidad)
 {
 	Ogre::SceneNode* child = father->createChildSceneNode(name); // se hace hijo del nodo padre (pNode)
 	children.push_back(child);
@@ -21,6 +22,7 @@ Ogre::SceneNode * AppObj::addChild(std::string name, std::string material, Ogre:
 	if (material != "") {
 		Ogre::Entity* ent = father->getCreator()->createEntity(material); //se crea una entidad accediendo al creador del nodo padre
 		child->attachObject(ent); //se vincula la entidad al nodo
+		entidad = ent;
 	}
 
 	return child;

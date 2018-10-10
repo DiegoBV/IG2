@@ -20,7 +20,7 @@ public:
 	virtual ~AppObj() {};
 	AppObj(Ogre::SceneNode* node): pNode(node) {};
 	Ogre::SceneNode* addChild(std::string name, std::string material);
-	Ogre::SceneNode* addChild(std::string name, std::string material, Ogre::SceneNode* father);
+	Ogre::SceneNode* addChild(std::string name, std::string material, Ogre::SceneNode* father, Ogre::Entity* entidad = nullptr);
 	inline Ogre::Node* getChild(std::string name) { return pNode->getChild(name); };
 	inline Ogre::SceneNode* getMainNode() { return pNode; };
 	inline void setMaterial(std::string child, std::string material) { pNode->getCreator()->getEntity(child)->setMaterialName(material); };

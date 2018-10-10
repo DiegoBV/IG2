@@ -123,6 +123,7 @@
     <ClInclude Include="IG2ApplicationContext.h" />
     <ClInclude Include="IG2App.h" />
     <ClInclude Include="Mirror.h" />
+    <ClInclude Include="Sinbad.h" />
     <ClInclude Include="Toy.h" />
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +132,7 @@
     <ClCompile Include="IG2Main.cpp" />
     <ClCompile Include="IG2App.cpp" />
     <ClCompile Include="Mirror.cpp" />
+    <ClCompile Include="Sinbad.cpp" />
     <ClCompile Include="Toy.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

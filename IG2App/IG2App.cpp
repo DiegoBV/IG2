@@ -6,6 +6,7 @@
 #include <OgreMeshManager.h>
 #include "Toy.h"
 #include "Mirror.h"
+#include "Sinbad.h"
 
 
 
@@ -107,9 +108,9 @@ void IG2App::setupScene(void)
 
   // finally something to render
 
-  actors.push_back(new Mirror(mSM->getRootSceneNode(), "mGrid", "Plano"));
+  actors.push_back(new Mirror(mSM->getRootSceneNode(), "mGrid", "Plano", mCamNode));
   mGridNode = dynamic_cast<Mirror*>(actors.back())->getMirror();
-  mGridNode->showBoundingBox(true);
+  //mGridNode->showBoundingBox(true);
 
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -119,13 +120,14 @@ void IG2App::setupScene(void)
 
   //mSinbadNode = mGridNode->createChildSceneNode("nSinbad"); //Asignamos mSinbadNode  como hijo de mGridNode con el valor de nSinbad 
   //mSinbadNode->attachObject(ent);
-  actors.push_back(new AppObj(mGridNode));
-  mSinbadNode = actors.back()->addChild("nSinbad", "Sinbad.mesh");
+  Sinbad* sin = new Sinbad(mGridNode);
+  actors.push_back(sin);
+  mSinbadNode = sin->getSinbad();
   
 
   mSinbadNode->setPosition(400, 100, -300);
-  mSinbadNode->setOrientation(0, 0, 180, 0);
   mSinbadNode->setScale(20, 20, 20);
+  addInputListener(actors.back());
   //mSinbadNode->yaw(Ogre::Degree(-45));
   //mSinbadNode->showBoundingBox(true);
   //mSinbadNode->setVisible(false);

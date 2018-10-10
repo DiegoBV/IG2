@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-void Mirror::setReflection()
+void Mirror::setReflection(SceneNode* camNode)
 {
 //-------------------------------Camera--------------------------
 	camRef = pNode->getCreator()->createCamera("RefCam");
@@ -10,11 +10,10 @@ void Mirror::setReflection()
 	camRef->setFarClipDistance(10000);
 	camRef->setAutoAspectRatio(true);
 
-	Ogre::SceneNode* auxCam = pNode->getCreator()->getRootSceneNode()->createChildSceneNode("RefCam");
-	auxCam->attachObject(camRef);
-
-	auxCam->setPosition(0, 0, 0);
-	auxCam->lookAt(Ogre::Vector3(0, 0, 1), Ogre::Node::TS_WORLD);
+	//Ogre::SceneNode* auxCam = pNode->getCreator()->getRootSceneNode()->createChildSceneNode("RefCam");
+	if (camNode != nullptr) {
+		camNode->attachObject(camRef);
+	}
 
 //-------------------------------MovablePlane--------------------------
 	mp = new MovablePlane(Vector3::UNIT_Y, 0);
@@ -34,7 +33,7 @@ void Mirror::setReflection()
 	renderTexture = rttTex->getBuffer()->getRenderTarget();
 	vpt = renderTexture->addViewport(camRef);
 	vpt->setClearEveryFrame(true);
-	vpt->setBackgroundColour(ColourValue::Black);
+	vpt->setBackgroundColour(ColourValue::White);
 
 	tu = pNode->getCreator()->getEntity("mGrid")->getSubEntities()[0]->getMaterial()->getTechniques()[0]->getPasses()[0]->
 		createTextureUnitState("texRtt");
@@ -57,23 +56,28 @@ Mirror::~Mirror()
 	delete mp;
 }
 
-Mirror::Mirror(Ogre::SceneNode * node, std::string name, std::string material): AppObj(node)
+Mirror::Mirror(Ogre::SceneNode * node, std::string name, std::string material, SceneNode* camNode): AppObj(node), name(name)
 {
 	Ogre::MeshManager::getSingleton().createPlane("mPlane1080x800", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, Ogre::Plane(Ogre::Vector3::UNIT_Y, 0), 1080, 800, 100, 80, true, 1, 1.0, 1.0, Ogre::Vector3::NEGATIVE_UNIT_Z); //crea el mesh
 	mGridNode = addChild(name, "mPlane1080x800");
 	setMaterial(name, material);
 
-	setReflection();
+	setReflection(camNode);
+
+	planoAux = mGridNode->getCreator()->getEntity(name);
+	def_Ambient = mGridNode->getCreator()->getAmbientLight();
 }
 
 void Mirror::preRenderTargetUpdate(const Ogre::RenderTargetEvent & evt) //??????????????????????
 {
-	mGridNode->setVisible(false);
-	pNode->getCreator()->getLight("Luz")->setDiffuseColour(1, 1, 1);
+	planoAux->setVisible(false);
+	//mGridNode->setVisible(false);
+	mGridNode->getCreator()->setAmbientLight(ColourValue(0.9,0,0.8));
 }
 
 void Mirror::postRenderTargetUpdate(const Ogre::RenderTargetEvent & evt) //???????????????????????
 {
-	mGridNode->setVisible(true);
-	pNode->getCreator()->getLight("Luz")->setDiffuseColour(0.75, 0.75, 0.75);
+	planoAux->setVisible(true);
+	//mGridNode->setVisible(true);
+	mGridNode->getCreator()->setAmbientLight(def_Ambient);
 }
