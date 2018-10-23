@@ -125,8 +125,7 @@ void IG2App::setupScene(void)
   mSinbadNode = sin->getSinbad();
   
 
-  mSinbadNode->setPosition(400, 100, -300);
-  mSinbadNode->setScale(20, 20, 20);
+  
   addInputListener(actors.back());
   //mSinbadNode->yaw(Ogre::Degree(-45));
   //mSinbadNode->showBoundingBox(true);
@@ -136,6 +135,12 @@ void IG2App::setupScene(void)
   actors.push_back(new Toy(toy));
   toy->setPosition(0, 100, 0);
   addInputListener(actors.back()); //lo añadimos como listener para que reciba los eventos de teclado
+
+
+
+  bomba = mGridNode->createChildSceneNode("bomba");
+  actors.push_back(new Bomb(bomba));
+  addInputListener(actors.back());
 
   //------------------------------------------------------------------------
 

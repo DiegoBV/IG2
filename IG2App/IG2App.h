@@ -3,11 +3,14 @@
 
 #include "IG2ApplicationContext.h"
 #include <OgreSceneManager.h>
+#include <OgreCameraMan.h>
 #include <OgreSceneNode.h>
 #include <OgreTrays.h>
-#include <OgreCameraMan.h>
-#include <vector>
 #include "AppObj.h"
+#include <vector>
+#include "Bomb.h"
+
+using namespace Ogre;
 
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener 
 {
@@ -25,13 +28,14 @@ protected:
   void rotateGrid();
    
   //nodos del arbol de recursos
-  Ogre::SceneManager* mSM = nullptr;
+  SceneManager* mSM = nullptr;
   OgreBites::TrayManager* mTrayMgr = nullptr;    
-  Ogre::SceneNode* mLightNode = nullptr;
-  Ogre::SceneNode* mCamNode = nullptr;
-  Ogre::SceneNode* mSinbadNode = nullptr;
-  Ogre::SceneNode* mGridNode = nullptr;
-  Ogre::SceneNode* toy = nullptr;
+  SceneNode* mLightNode = nullptr;
+  SceneNode* mCamNode = nullptr;
+  SceneNode* mSinbadNode = nullptr;
+  SceneNode* mGridNode = nullptr;
+  SceneNode* toy = nullptr;
+  SceneNode* bomba = nullptr;
   OgreBites::CameraMan* mCamMgr = nullptr;
 
   std::vector<AppObj*> actors;

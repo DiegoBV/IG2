@@ -1,11 +1,17 @@
 #include "IG2ApplicationContext.h"
+#include <OgreAnimationState.h>
+#include <OgreAnimationTrack.h>
+#include <OgreMovableObject.h>
 #include <OgreSceneManager.h>
-#include <OgreSceneNode.h>
-#include <OgreTrays.h>
-#include <OgreCameraMan.h>
-#include <OgreEntity.h>
 #include <OgreMeshManager.h>
+#include <OgreSceneNode.h>
+#include <OgreCameraMan.h>
+#include <OgreAnimation.h>
+#include <OgreKeyFrame.h>
+#include <OgreEntity.h>
+#include <OgreTrays.h>
 #include <vector>
+using namespace Ogre;
 
 #pragma once
 class AppObj: public OgreBites::InputListener
