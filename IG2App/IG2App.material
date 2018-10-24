@@ -5,7 +5,7 @@ material Plano {
             ambient 0.5 0.5 0.5
             specular 0.5 0.5 0.5 100
             texture_unit {
-                Dr_Bunsen_Head.jpg
+                texture Water02.jpg
                 colour_op add
                 scroll_anim 0.1 0.0
             }

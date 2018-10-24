@@ -13,7 +13,7 @@ public:
 private: 
 	enum animations
 	{
-		Dance,Run
+		Dance,Run,Suicide,Muerto
 	};
 	animations follAnim_;
 	Ogre::SceneNode* sinbadNode;
@@ -33,7 +33,22 @@ private:
 	Real longitudPaso; 
 	TransformKeyFrame* kf = nullptr;
 
-	int animDuration = 20; //Duracion total de la animacion
+	Real animDuration = 10; //Duracion total de la animacion
+
+	void suicide();
+	Animation* suic = nullptr;
+	AnimationState* suicideState = nullptr;
+	NodeAnimationTrack* suiTrack = nullptr;
+	Vector3 bombPos;
+	Real stepLeng;
+	TransformKeyFrame* sKf = nullptr;
+
+
+
+
+
+
+
 	//int vel = 20;
 };
 

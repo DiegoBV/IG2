@@ -5,7 +5,6 @@
 void Bomb::createAnim()
 {
 	bomb->setScale(.5, .5, .5);
-	keyFramePos = Vector3(-200, 0, 0);
 	bomb->setPosition(keyFramePos);
 	bomb->setInitialState(); //Guardamos el estado inicial
 

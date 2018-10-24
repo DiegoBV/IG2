@@ -133,7 +133,7 @@ void IG2App::setupScene(void)
 
   toy = mGridNode->createChildSceneNode("toy");
   actors.push_back(new Toy(toy));
-  toy->setPosition(0, 100, 0);
+  toy->setPosition(-200, 100, 0);
   addInputListener(actors.back()); //lo añadimos como listener para que reciba los eventos de teclado
 
 

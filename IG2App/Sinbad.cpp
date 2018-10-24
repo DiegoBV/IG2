@@ -25,7 +25,6 @@ Sinbad::Sinbad(Ogre::SceneNode * node): AppObj(node)
 
 	createWalk();
 
-
 	if (entity != nullptr) {
 		follAnim_ = Run;
 		animState = entity->getAnimationState("Dance");
@@ -40,10 +39,25 @@ void Sinbad::frameRendered(const Ogre::FrameEvent & evt)
 	if (follAnim_ == Run) {
 		animState->addTime(evt.timeSinceLastFrame);
 	}
+	else if(follAnim_ == Suicide){
+		
+		suicideState->addTime(evt.timeSinceLastFrame);
+
+		if (!suicideState->hasEnded()) {
+			animState->addTime(evt.timeSinceLastFrame);
+			animStateAux->addTime(evt.timeSinceLastFrame);
+		}
+		else {
+			follAnim_ = Muerto;
+		}
+
+	}
 	else {
 		animState->addTime(evt.timeSinceLastFrame);
 		animStateAux->addTime(evt.timeSinceLastFrame);
 		walkinState->addTime(evt.timeSinceLastFrame);
+		if(suicideState != nullptr)
+			suicideState->addTime(evt.timeSinceLastFrame);
 	}
 	
 }
@@ -53,6 +67,11 @@ bool Sinbad::keyPressed(const OgreBites::KeyboardEvent & evt)
 	switch (evt.keysym.sym)
 	{
 	case SDLK_r:
+		switchAnim();
+		break;
+	case SDLK_b:
+		suicide();
+		follAnim_ = Suicide;
 		switchAnim();
 		break;
 	default:
@@ -96,6 +115,25 @@ void Sinbad::switchAnim()
 
 		follAnim_ = Dance;
 		break;
+	case Sinbad::Suicide:
+		animState->setEnabled(false);
+		animStateAux->setEnabled(false);
+		walkinState->setEnabled(false);
+
+		animStateAux->setEnabled(false);
+		animState->setEnabled(false);
+		animState = entity->getAnimationState("RunBase");
+		animState->setEnabled(true);
+		animState->setLoop(true);
+		animStateAux->setEnabled(true);
+		animStateAux->setLoop(true);
+
+		entity->detachObjectFromBone(swordR);
+		entity->attachObjectToBone("Handle.R", swordR);
+
+		suicideState->setEnabled(true);
+		suicideState->setLoop(false);
+		break;
 	default:
 		break;
 	}
@@ -114,27 +152,94 @@ void Sinbad::createWalk()
 	track = anim->createNodeTrack(0);
 	track->setAssociatedNode(sinbadNode);
 
-	longitudPaso = animDuration / 3;
+	Vector3 src(0, 0, 1);
+	Vector3 dest(0, 0, 1);
+	Quaternion quat = src.getRotationTo(dest);
 
-	kf = track->createNodeKeyFrame(longitudPaso * 0); //Primer Keyframe
-	keyFramePos = Vector3(0, 0, 0); //Posicion inicial
+	longitudPaso = animDuration / 8;
+	int i = 0;
+	kf = track->createNodeKeyFrame(longitudPaso * i++); //Primer Keyframe
+	keyFramePos = Vector3(0, 0, 50); //Posicion inicial
+	kf->setTranslate(keyFramePos);
+	quat = src.getRotationTo(dest);
+	kf->setRotation(quat);
+	
+
+	kf = track->createNodeKeyFrame(longitudPaso * i++); //2º Keyframe
+	keyFramePos = Vector3(0, 0, 550);
+	kf->setTranslate(keyFramePos);
+	kf->setRotation(quat);
+
+	kf = track->createNodeKeyFrame(longitudPaso * i++); //2º Keyframe
+	keyFramePos = Vector3(-50, 0, 600);
+	kf->setTranslate(keyFramePos);
+	dest = { -1,0,0 };
+	quat = src.getRotationTo(dest);
+	kf->setRotation(quat);
+
+	kf = track->createNodeKeyFrame(longitudPaso * i++); //3º Keyframe
+	keyFramePos = Vector3(-750, 0, 600);
+	kf->setTranslate(keyFramePos);
+	kf->setRotation(quat);
+
+	kf = track->createNodeKeyFrame(longitudPaso * i++); //4º Keyframe
+	keyFramePos = Vector3(-800, 0, 550);
+	dest = { 0, 0, -1};
+	quat = src.getRotationTo(dest);
+	kf->setRotation(quat);
 	kf->setTranslate(keyFramePos);
 
-	kf = track->createNodeKeyFrame(longitudPaso * 1); //2º Keyframe
-	keyFramePos = Vector3(0, 0, 600);
+	kf = track->createNodeKeyFrame(longitudPaso * i++); //4º Keyframe
+	keyFramePos = Vector3(-800, 0, 50);
 	kf->setTranslate(keyFramePos);
+	kf->setRotation(quat);
 
-	kf = track->createNodeKeyFrame(longitudPaso * 2); //3º Keyframe
-	keyFramePos = Vector3(-800, 0, 600);
-	kf->setTranslate(keyFramePos);
 
-	kf = track->createNodeKeyFrame(longitudPaso * 3); //4º Keyframe
-	keyFramePos = Vector3(-800, 0, 00);
+	kf = track->createNodeKeyFrame(longitudPaso * i++); //4º Keyframe
+	keyFramePos = Vector3(-750, 0, 0);
+	dest = { 1, 0, 0 };
+	quat = src.getRotationTo(dest);
+	kf->setRotation(quat);
 	kf->setTranslate(keyFramePos);
+	kf->setRotation(quat);
+
+	kf = track->createNodeKeyFrame(longitudPaso * i++); //4º Keyframe
+	keyFramePos = Vector3(-50, 0, 0);
+	kf->setTranslate(keyFramePos);
+	kf->setRotation(quat);
+
 
 	//El Loop se encarga de volver a la posicion inicial
-
 	walkinState = pNode->getCreator()->createAnimationState("walk");
-	walkinState->setLoop(false);
-	walkinState->setEnabled(false);
+	//walkinState->setLoop(false);
+	//walkinState->setEnabled(false);
+}
+
+void Sinbad::suicide()
+{
+	Vector3 src(0, 0, 1);
+
+	suic = pNode->getCreator()->createAnimation("suicide", animDuration);
+	suiTrack = suic->createNodeTrack(0);
+	suiTrack->setAssociatedNode(sinbadNode);
+	
+
+	bombPos = { -400, 0, 300 };
+
+	Vector3 currentPos = sinbadNode->getPosition() - Vector3(400, 100, -300);
+
+	stepLeng = animDuration;
+
+	sKf = suiTrack->createNodeKeyFrame(stepLeng * 0);
+	sKf->setTranslate(currentPos);
+	Vector3 ori = bombPos - currentPos;
+	
+	Quaternion quat = src.getRotationTo(ori);
+    sKf->setRotation(quat);
+
+	sKf = suiTrack->createNodeKeyFrame(stepLeng * 1);
+	sKf->setTranslate(bombPos);
+	sKf->setRotation(quat);
+
+	suicideState = pNode->getCreator()->createAnimationState("suicide");
 }
