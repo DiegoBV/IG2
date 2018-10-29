@@ -44,6 +44,14 @@ private:
 	TransformKeyFrame* sKf = nullptr;
 
 
+	void death();
+	Animation* deathAnim = nullptr;
+	AnimationState* deathState = nullptr;
+	NodeAnimationTrack* deathTrack = nullptr;
+	Vector3 deathPos;
+	Real deathLenght;
+	Real deathDuration = 300;
+	TransformKeyFrame* deathKf;
 
 
 

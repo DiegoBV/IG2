@@ -48,9 +48,14 @@ void Sinbad::frameRendered(const Ogre::FrameEvent & evt)
 			animStateAux->addTime(evt.timeSinceLastFrame);
 		}
 		else {
+			death();
 			follAnim_ = Muerto;
+			switchAnim();
 		}
 
+	}
+	else if (follAnim_ == Muerto) {
+		deathState->addTime(evt.timeSinceLastFrame);
 	}
 	else {
 		animState->addTime(evt.timeSinceLastFrame);
@@ -133,6 +138,17 @@ void Sinbad::switchAnim()
 
 		suicideState->setEnabled(true);
 		suicideState->setLoop(false);
+		break;
+	case Sinbad::Muerto:
+		animState->setEnabled(false);
+		animStateAux->setEnabled(false);
+		walkinState->setEnabled(false);
+		suicideState->setEnabled(false);
+
+		entity->detachObjectFromBone(swordR);
+		entity->attachObjectToBone("Sheath.R", swordR);
+
+		deathState->setEnabled(true);
 		break;
 	default:
 		break;
@@ -233,7 +249,6 @@ void Sinbad::suicide()
 	sKf = suiTrack->createNodeKeyFrame(stepLeng * 0);
 	sKf->setTranslate(currentPos);
 	Vector3 ori = bombPos - currentPos;
-	
 	Quaternion quat = src.getRotationTo(ori);
     sKf->setRotation(quat);
 
@@ -242,4 +257,33 @@ void Sinbad::suicide()
 	sKf->setRotation(quat);
 
 	suicideState = pNode->getCreator()->createAnimationState("suicide");
+}
+
+void Sinbad::death()
+{
+	deathAnim = pNode->getCreator()->createAnimation("death", deathDuration);
+	deathTrack = deathAnim->createNodeTrack(0);
+	deathTrack->setAssociatedNode(sinbadNode);
+
+	deathPos = sinbadNode->getPosition() - Vector3(400, 200, -300); // 200 para que este a lvl suelo
+
+
+	Vector3 src(0, 0, 1);
+	Vector3 dst(0, 1, 0);
+	Quaternion quat;
+
+	deathLenght = deathDuration/2;
+	//Primer frame
+	deathKf = deathTrack->createNodeKeyFrame(deathLenght * 0);
+	deathKf->setTranslate(deathPos);
+	quat = src.getRotationTo(dst);
+	deathKf->setRotation(quat);
+
+	//Segundo frame
+	deathKf = deathTrack->createNodeKeyFrame(deathLenght * 1);
+	deathPos -= Vector3(-36000, 0, 0); //Movemos hacia la derecha
+	deathKf->setTranslate(deathPos);//Movimiento
+	deathKf->setRotation(quat); // rotacion
+
+	deathState = pNode->getCreator()->createAnimationState("death");
 }
