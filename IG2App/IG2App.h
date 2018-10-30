@@ -38,6 +38,8 @@ protected:
   SceneNode* bomba = nullptr;
   OgreBites::CameraMan* mCamMgr = nullptr;
 
+  bool flag = false;
+
   std::vector<AppObj*> actors;
  
 };

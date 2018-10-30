@@ -75,6 +75,23 @@ bool Sinbad::keyPressed(const OgreBites::KeyboardEvent & evt)
 		switchAnim();
 		break;
 	case SDLK_b:
+		if (follAnim_ != Suicide || follAnim_ != Muerto) {
+			suicide();
+			follAnim_ = Suicide;
+			switchAnim();
+		}
+		break;
+	default:
+		break;
+	}
+	return false;
+}
+
+void Sinbad::reciveEvent(Eventos evnt, AppObj * sender)
+{
+	switch (evnt)
+	{
+	case AppObj::colision:
 		suicide();
 		follAnim_ = Suicide;
 		switchAnim();
@@ -82,7 +99,6 @@ bool Sinbad::keyPressed(const OgreBites::KeyboardEvent & evt)
 	default:
 		break;
 	}
-	return false;
 }
 
 void Sinbad::switchAnim()
@@ -136,6 +152,9 @@ void Sinbad::switchAnim()
 		entity->detachObjectFromBone(swordR);
 		entity->attachObjectToBone("Handle.R", swordR);
 
+		entity->detachObjectFromBone(swordL);
+		entity->attachObjectToBone("Handle.L", swordL);
+
 		suicideState->setEnabled(true);
 		suicideState->setLoop(false);
 		break;
@@ -147,6 +166,9 @@ void Sinbad::switchAnim()
 
 		entity->detachObjectFromBone(swordR);
 		entity->attachObjectToBone("Sheath.R", swordR);
+
+		entity->detachObjectFromBone(swordL);
+		entity->attachObjectToBone("Sheath.L", swordL);
 
 		deathState->setEnabled(true);
 		break;
@@ -233,6 +255,7 @@ void Sinbad::createWalk()
 
 void Sinbad::suicide()
 {
+	if(suic == nullptr){
 	Vector3 src(0, 0, 1);
 
 	suic = pNode->getCreator()->createAnimation("suicide", animDuration);
@@ -257,10 +280,13 @@ void Sinbad::suicide()
 	sKf->setRotation(quat);
 
 	suicideState = pNode->getCreator()->createAnimationState("suicide");
+	}
 }
 
 void Sinbad::death()
 {
+	if (deathAnim == nullptr) {
+
 	deathAnim = pNode->getCreator()->createAnimation("death", deathDuration);
 	deathTrack = deathAnim->createNodeTrack(0);
 	deathTrack->setAssociatedNode(sinbadNode);
@@ -286,4 +312,5 @@ void Sinbad::death()
 	deathKf->setRotation(quat); // rotacion
 
 	deathState = pNode->getCreator()->createAnimationState("death");
+	}
 }

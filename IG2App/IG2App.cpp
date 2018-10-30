@@ -21,6 +21,13 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
   else if (evt.keysym.sym == SDLK_p) {
 	  rotateGrid();
   }
+  else if ((evt.keysym.sym == SDLK_c)) {
+
+	  flag = !flag;
+	  if(flag){mCamMgr->setTarget(mSinbadNode);  }
+	  else mCamMgr->setTarget(mSM->getRootSceneNode());  
+
+  }
   //else if (evt.keysym.sym == SDLK_???)
   
   return true;
@@ -123,24 +130,26 @@ void IG2App::setupScene(void)
   Sinbad* sin = new Sinbad(mGridNode);
   actors.push_back(sin);
   mSinbadNode = sin->getSinbad();
+  AppObj::addAppListener(actors.back());
   
-
   
   addInputListener(actors.back());
   //mSinbadNode->yaw(Ogre::Degree(-45));
   //mSinbadNode->showBoundingBox(true);
   //mSinbadNode->setVisible(false);
 
+  bomba = mGridNode->createChildSceneNode("bomba");
+  actors.push_back(new Bomb(bomba));
+  addInputListener(actors.back());
+  AppObj::addAppListener(actors.back());
+
   toy = mGridNode->createChildSceneNode("toy");
   actors.push_back(new Toy(toy));
   toy->setPosition(-200, 100, 0);
   addInputListener(actors.back()); //lo añadimos como listener para que reciba los eventos de teclado
+  AppObj::addAppListener(actors.back());
+  //toy->showBoundingBox(true);
 
-
-
-  bomba = mGridNode->createChildSceneNode("bomba");
-  actors.push_back(new Bomb(bomba));
-  addInputListener(actors.back());
 
   //------------------------------------------------------------------------
 
@@ -152,6 +161,5 @@ void IG2App::setupScene(void)
   //mCamMgr->setYawPitchDist(Radian(0), Degree(30), 100);
 
   //------------------------------------------------------------------------
-
 }
 

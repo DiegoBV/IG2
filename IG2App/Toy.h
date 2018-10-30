@@ -8,11 +8,17 @@ private:
 	Ogre::SceneNode* head;
 	Ogre::SceneNode* body;
 
+	Entity* bodyEnt = nullptr;
+	
+	Sphere bmb;
+
 	bool on = false;
+	int XX = 0;
 
 	void movement(Ogre::Real time);
 	void rotateDirection();
 	void rotateBody_Head();
+	bool check_collision();
 
 public:
 	Toy() {};
@@ -22,6 +28,10 @@ public:
 	virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);
 
 	InputListener* getTrueSelf() { return this; };
+
+	virtual void reciveEvent(Eventos evnt, AppObj* sender);
+
+	void setBomb(const Sphere nBomb) { bmb = nBomb; };
 };
 
 // roll -> rota eje z

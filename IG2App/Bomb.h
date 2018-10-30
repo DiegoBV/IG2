@@ -1,6 +1,6 @@
 #pragma once
 #include "AppObj.h"
-
+#include <OgreParticleSystem.h>
 
 class Bomb :
 	public AppObj
@@ -16,6 +16,8 @@ private:
 	Real longitudPaso;
 	TransformKeyFrame* kf = nullptr;
 
+	ParticleSystem* smoke = nullptr;
+
 	int animDuration = 5;
 	int vel = 20;
 
@@ -24,5 +26,7 @@ public:
 	virtual ~Bomb();
 	Bomb(Ogre::SceneNode* node);
 	virtual void frameRendered(const Ogre::FrameEvent & evt);
+	virtual bool keyPressed(const OgreBites::KeyboardEvent & evt);
+	virtual void reciveEvent(Eventos evnt, AppObj* sender);
 };
 

@@ -10,6 +10,8 @@ public:
 	Ogre::SceneNode* getSinbad() const { return sinbadNode; };
 	virtual void frameRendered(const Ogre::FrameEvent & evt);
 	virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);
+	virtual void reciveEvent(Eventos evnt, AppObj* sender);
+
 private: 
 	enum animations
 	{

@@ -5,6 +5,7 @@ Toy::Toy(Ogre::SceneNode * node): AppObj(node)
 {
 	//cuerpo
 	body = addChild("body", "sphere.mesh");
+	bodyEnt = pNode->getCreator()->getEntity("body");
 
 	//cabeza
 	head = addChild("head", "sphere.mesh");
@@ -25,6 +26,8 @@ Toy::Toy(Ogre::SceneNode * node): AppObj(node)
 	Ogre::SceneNode* bButton = addChild("bButton", "sphere.mesh", body);
 	bButton->setPosition(0, 0, 100);
 	bButton->setScale(.1, .1, .1);
+
+	setBomb(pNode->getCreator()->getEntity("bomb")->getWorldBoundingSphere());
 }
 
 void Toy::frameRendered(const Ogre::FrameEvent & evt)
@@ -32,6 +35,13 @@ void Toy::frameRendered(const Ogre::FrameEvent & evt)
 	if (on) { //si esta en movimiento
 		movement(evt.timeSinceLastFrame); //lo mueve de acuerdo al tiempo para velocidad constante
 		rotateBody_Head(); //rota cabeza y cuerpo
+	}
+	if (check_collision()) {
+		//pNode->setVisible(false);
+		cout << XX << endl;
+		XX++;
+		fireAppEvent(colision, this);
+		
 	}
 }
 
@@ -55,6 +65,26 @@ bool Toy::keyPressed(const OgreBites::KeyboardEvent & evt)
 	return true;
 }
 
+void Toy::reciveEvent(Eventos evnt, AppObj * sender)
+{
+	switch (evnt)
+	{
+	case AppObj::colision:
+		
+		//pNode->setPosition(300, 100, 200);
+		pNode->getCreator()->getEntity("body")->setVisible(false);
+		pNode->getCreator()->getEntity("head")->setVisible(false);
+		pNode->getCreator()->getEntity("rEye")->setVisible(false);
+		pNode->getCreator()->getEntity("lEye")->setVisible(false);
+		pNode->getCreator()->getEntity("bButton")->setVisible(false);
+		on = false;
+		//pNode->setVisible(false);
+		break;
+	default:
+		break;
+	}
+}
+
 void Toy::movement(Ogre::Real time)
 {
 	//movimiento del objeto completo
@@ -74,4 +104,13 @@ void Toy::rotateBody_Head()
 
 	//movimiento del cuerpo
 	body->pitch(Ogre::Radian(0.1));
+}
+
+bool Toy::check_collision()
+{
+	if (bodyEnt->isVisible()) {
+		Sphere sphere = bodyEnt->getWorldBoundingSphere();
+		return sphere.intersects(bmb);
+	}
+	else return false;
 }
