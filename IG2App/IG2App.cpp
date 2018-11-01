@@ -18,10 +18,10 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
   {
     getRoot()->queueEndRendering();
   }
-  else if (evt.keysym.sym == SDLK_p) {
+  else if (evt.keysym.sym == SDLK_p) {        //rotamos el plano
 	  rotateGrid();
   }
-  else if ((evt.keysym.sym == SDLK_c)) {
+  else if ((evt.keysym.sym == SDLK_c)) {    //cambiamos el target de la camara
 
 	  flag = !flag;
 	  if(flag){mCamMgr->setTarget(mSinbadNode);  }
@@ -115,34 +115,34 @@ void IG2App::setupScene(void)
 
   // finally something to render
 
+//-------------------------------------------PLANO---------------------------------------
+
   actors.push_back(new Mirror(mSM->getRootSceneNode(), "mGrid", "Plano", mCamNode));
   mGridNode = dynamic_cast<Mirror*>(actors.back())->getMirror();
   //mGridNode->showBoundingBox(true);
 
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------
-
+ //-------------------------------------------SINBAD---------------------------------------
 
   //Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
 
   //mSinbadNode = mGridNode->createChildSceneNode("nSinbad"); //Asignamos mSinbadNode  como hijo de mGridNode con el valor de nSinbad 
   //mSinbadNode->attachObject(ent);
+
   Sinbad* sin = new Sinbad(mGridNode);
   actors.push_back(sin);
   mSinbadNode = sin->getSinbad();
-  AppObj::addAppListener(actors.back());
-  
-  
+  AppObj::addAppListener(actors.back());  //añadimos como listener de eventos --> colision
   addInputListener(actors.back());
-  //mSinbadNode->yaw(Ogre::Degree(-45));
-  //mSinbadNode->showBoundingBox(true);
-  //mSinbadNode->setVisible(false);
+ 
+ //-------------------------------------------BOMBA---------------------------------------
 
   bomba = mGridNode->createChildSceneNode("bomba");
   actors.push_back(new Bomb(bomba));
   addInputListener(actors.back());
   AppObj::addAppListener(actors.back());
 
+//-------------------------------------------TOY---------------------------------------
   toy = mGridNode->createChildSceneNode("toy");
   actors.push_back(new Toy(toy));
   toy->setPosition(-200, 100, 0);
@@ -151,12 +151,11 @@ void IG2App::setupScene(void)
   //toy->showBoundingBox(true);
 
 
-  //------------------------------------------------------------------------
+//----------------------------------CAMARA--------------------------------------
 
   mCamMgr = new OgreBites::CameraMan(mCamNode);
   addInputListener(mCamMgr);
   mCamMgr->setStyle(OgreBites::CS_ORBIT);  
-  
   //mCamMgr->setTarget(mSinbadNode);  
   //mCamMgr->setYawPitchDist(Radian(0), Degree(30), 100);
 

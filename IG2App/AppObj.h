@@ -20,27 +20,44 @@ class AppObj: public OgreBites::InputListener
 {
 
 protected:
-	Ogre::SceneNode* pNode;
-	std::vector<Ogre::SceneNode*> children;
+	Ogre::SceneNode* pNode;                                                                                                         //nodo padre del objeto
+
+	std::vector<Ogre::SceneNode*> children;                                                                                        //lista de hijos del nodo padre
 
 	enum Eventos {
 		colision
 	};
 
-	static std::vector<AppObj*> appListeners;
-	static void fireAppEvent(Eventos evnt, AppObj* sender) { for (AppObj* obj : appListeners) { obj->reciveEvent(evnt, sender); } }
+	static std::vector<AppObj*> appListeners;                                                                                        //lista de listeners
 
-	virtual void reciveEvent(Eventos evnt, AppObj* sender) {};
+	static void fireAppEvent(Eventos evnt, AppObj* sender) { for (AppObj* obj : appListeners) { obj->receiveEvent(evnt, sender); } }  //por cada listener, llama a su metodo "receiveEvent"
+
+	virtual void receiveEvent(Eventos evnt, AppObj* sender) {};                                                                      //metodo virtual, cada objeto reaccionara o no a los eventos
 
 public:
 	AppObj() {};
+
 	virtual ~AppObj() {};
-	static void addAppListener(AppObj* obj) { appListeners.push_back(obj); };
+
 	AppObj(Ogre::SceneNode* node): pNode(node) {};
-	Ogre::SceneNode* addChild(std::string name, std::string material);
-	Ogre::SceneNode* addChild(std::string name, std::string material, Ogre::SceneNode* father, Ogre::Entity* entidad = nullptr);
-	inline Ogre::Node* getChild(std::string name) { return pNode->getChild(name); };
-	inline Ogre::SceneNode* getMainNode() { return pNode; };
-	inline void setMaterial(std::string child, std::string material) { pNode->getCreator()->getEntity(child)->setMaterialName(material); };
+
+//------------------------------------------------------------ADDS-----------------------------------------------
+
+	static void addAppListener(AppObj* obj) { appListeners.push_back(obj); };                                                  //metodo estatico que añade un listener de eventos
+
+	Ogre::SceneNode* addChild(std::string name, std::string material);                                                          //anyade un hijo al padre (por ejemplo, el body o la cabeza del toy)
+
+	Ogre::SceneNode* addChild(std::string name, std::string material, Ogre::SceneNode* father, Ogre::Entity* entidad = nullptr); //anyade un hijo al padre indicado (por ejemplo, los ojos de toy)
+
+ //------------------------------------------------------------GETS-----------------------------------------------
+
+	inline Ogre::Node* getChild(std::string name) { return pNode->getChild(name); };                                             //devuelve un hijo por el nombre
+
+	inline Ogre::SceneNode* getMainNode() { return pNode; };                                                                     //devuelve el padre
+
+//------------------------------------------------------------SETS-----------------------------------------------
+
+	inline void setMaterial(std::string child, std::string material) {                                                           //cambia el material de un hijo por el nombre indicado
+		pNode->getCreator()->getEntity(child)->setMaterialName(material); };    
 };
 

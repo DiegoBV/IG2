@@ -17,22 +17,39 @@ class Mirror :
 {
 private:
 	std::string name;
+
 	Ogre::SceneNode* mGridNode = nullptr;
-	Camera* camRef;
-	MovablePlane* mp;
-	RenderTexture* renderTexture;
-	Viewport * vpt;
-	TextureUnitState* tu;
+
 	Entity* planoAux = nullptr;
+
+//----------------------------------------------------------------------REFLECTION-------------------------------------------
+
+	Camera* camRef;
+
+	MovablePlane* mp;
+
+	RenderTexture* renderTexture;
+
+	Viewport * vpt;
+
+	TextureUnitState* tu;
+
+
 	ColourValue def_Ambient;
 
 	void setReflection(SceneNode* camNode);
+
 public:
 	Mirror();
+
 	virtual ~Mirror();
+
 	Mirror(Ogre::SceneNode* node, std::string name, std::string material, SceneNode* camNode = nullptr);
+
 	inline SceneNode* getMirror() { return mGridNode; };
-	virtual void preRenderTargetUpdate(const Ogre::RenderTargetEvent& evt);
+
+	virtual void preRenderTargetUpdate(const Ogre::RenderTargetEvent& evt);                                //util para evitar que el espejo se refleje a sí mismo
+
 	virtual void postRenderTargetUpdate(const Ogre::RenderTargetEvent& evt);
 };
 
