@@ -24,6 +24,8 @@ protected:
   virtual void setupScene();
 
   virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener
+  virtual void frameRendered(const Ogre::FrameEvent& evt);
+  void checkCollisions();
 
   void rotateGrid();
    
@@ -38,10 +40,11 @@ protected:
   SceneNode* bomba = nullptr;
   OgreBites::CameraMan* mCamMgr = nullptr;
 
+  std::vector<pair<AppObj*, Entity*>> colisionables;
+
   bool flag = false;
 
   std::vector<AppObj*> actors;
- 
 };
 
 #endif

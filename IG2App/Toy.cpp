@@ -36,10 +36,6 @@ void Toy::frameRendered(const Ogre::FrameEvent & evt)
 		movement(evt.timeSinceLastFrame);       //lo mueve de acuerdo al tiempo para velocidad constante
 		rotateBody_Head();                     //rota cabeza y cuerpo
 	}
-
-	if (check_collision()) {
-		fireAppEvent(colision, this);         //si se da colision entre body y bomb, lanza el evento de que se ha producido una colision
-	}
 }
 
 bool Toy::keyPressed(const OgreBites::KeyboardEvent & evt)
@@ -98,13 +94,4 @@ void Toy::rotateBody_Head()
 
 	//movimiento del cuerpo
 	body->pitch(Ogre::Radian(0.1));
-}
-
-bool Toy::check_collision()
-{
-	if (bodyEnt->isVisible()) {
-		Sphere sphere = bodyEnt->getWorldBoundingSphere();
-		return sphere.intersects(bmb);
-	}
-	else return false;
 }

@@ -24,8 +24,6 @@ private:
 
 	void rotateBody_Head();                    //rotacion del cuerpo y la cabeza
 
-	bool check_collision();                   //comprueba las colisiones entre body y la bomba
-
 public:
 	Toy() {};
 

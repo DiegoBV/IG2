@@ -20,6 +20,7 @@ private:
 
 	Ogre::AnimationState* animState;           //AnimStates, los usamos para bailar y para correr (parte de arriba y de abajo)
 	Ogre::AnimationState* animStateAux;
+	AnimationState* draw_swords = nullptr;    //Animacion de mover las espadas
 
 	void switchAnim();                        //cambia entre las animaciones dependiendo de la variable "follAnim_"
 

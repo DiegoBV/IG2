@@ -19,27 +19,30 @@ using namespace std;
 class AppObj: public OgreBites::InputListener
 {
 
+public:
+	enum Eventos {
+		colision
+	};
+
 protected:
 	Ogre::SceneNode* pNode;                                                                                                         //nodo padre del objeto
 
 	std::vector<Ogre::SceneNode*> children;                                                                                        //lista de hijos del nodo padre
 
-	enum Eventos {
-		colision
-	};
-
 	static std::vector<AppObj*> appListeners;                                                                                        //lista de listeners
 
-	static void fireAppEvent(Eventos evnt, AppObj* sender) { for (AppObj* obj : appListeners) { obj->receiveEvent(evnt, sender); } }  //por cada listener, llama a su metodo "receiveEvent"
 
 	virtual void receiveEvent(Eventos evnt, AppObj* sender) {};                                                                      //metodo virtual, cada objeto reaccionara o no a los eventos
 
 public:
+
 	AppObj() {};
 
 	virtual ~AppObj() {};
 
 	AppObj(Ogre::SceneNode* node): pNode(node) {};
+
+	static void fireAppEvent(Eventos evnt, AppObj* sender) { for (AppObj* obj : appListeners) { obj->receiveEvent(evnt, sender); } }  //por cada listener, llama a su metodo "receiveEvent"
 
 //------------------------------------------------------------ADDS-----------------------------------------------
 

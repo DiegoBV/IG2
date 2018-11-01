@@ -33,6 +33,31 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
   return true;
 }
 
+void IG2App::frameRendered(const Ogre::FrameEvent & evt)
+{
+	checkCollisions();
+}
+
+void IG2App::checkCollisions()                                     //si se da colision entre dos objetos en el vector, lanza el evento de que se ha producido una colision
+{
+	int  i = 0;
+	int j = 1;
+	for (i = 0; i < colisionables.size() - 1; j++) {
+		//comprobacion J
+		if (colisionables[i].second->isVisible()) {
+			Sphere sphere = colisionables[i].second->getWorldBoundingSphere();
+			if (sphere.intersects(colisionables[j].second->getWorldBoundingSphere())) {
+				AppObj::fireAppEvent(AppObj::colision, colisionables[i].first);
+			}
+		}
+
+		if (j = colisionables.size()) {
+			i++;
+			j = i + 1;
+		}
+	}
+}
+
 void IG2App::rotateGrid() //rota el plano
 {
 	mGridNode->pitch(Ogre::Radian(0.1));
@@ -141,15 +166,15 @@ void IG2App::setupScene(void)
   actors.push_back(new Bomb(bomba));
   addInputListener(actors.back());
   AppObj::addAppListener(actors.back());
+  colisionables.push_back({ actors.back(), mSM->getEntity("bomb") });       //guardamos la entity de bomba en el vector de colisionables
 
 //-------------------------------------------TOY---------------------------------------
   toy = mGridNode->createChildSceneNode("toy");
   actors.push_back(new Toy(toy));
-  toy->setPosition(-200, 100, 0);
+  toy->setPosition(-400, 100, 0);
   addInputListener(actors.back()); //lo añadimos como listener para que reciba los eventos de teclado
   AppObj::addAppListener(actors.back());
-  //toy->showBoundingBox(true);
-
+  colisionables.push_back({ actors.back(), mSM->getEntity("body") });     //guardamos la entity del cuerpo en el vector de colisionables
 
 //----------------------------------CAMARA--------------------------------------
 

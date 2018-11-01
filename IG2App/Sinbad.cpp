@@ -30,6 +30,7 @@ Sinbad::Sinbad(Ogre::SceneNode * node): AppObj(node)
 		follAnim_ = Run;                                   //empieza bailando asi que la siguiente animacion es correr (o suicidio si se pulsa la b)
 		animState = entity->getAnimationState("Dance");    //accedemos a la anim de bailar
 		animStateAux = entity->getAnimationState("RunTop"); //guardamos tambien el movimiento de los brazos
+		draw_swords = entity->getAnimationState("DrawSwords");
 		animState->setEnabled(true);
 		animState->setLoop(true);
 	}
@@ -47,6 +48,7 @@ void Sinbad::frameRendered(const Ogre::FrameEvent & evt)
 		if (!suicideState->hasEnded()) {                //si la animacion de suicidio no ha terminado, la animacion de correr sigue activa
 			animState->addTime(evt.timeSinceLastFrame);
 			animStateAux->addTime(evt.timeSinceLastFrame);
+			draw_swords->addTime(evt.timeSinceLastFrame);
 		}
 		else {                                        //si ha terminado, se crea la animacion de muerte y cambia las animaciones
 			death();
@@ -77,7 +79,7 @@ bool Sinbad::keyPressed(const OgreBites::KeyboardEvent & evt)
 		switchAnim();  //cambia la animacion entre correr y bailar
 		break;
 	case SDLK_b:
-		if (follAnim_ != Suicide || follAnim_ != Muerto) {     //para evitar errores
+		if (suic == nullptr) {     //para evitar errores
 			suicide();                                        //crea la animacion de suicidio
 			follAnim_ = Suicide;
 			switchAnim();
@@ -94,9 +96,11 @@ void Sinbad::receiveEvent(Eventos evnt, AppObj * sender)
 	switch (evnt)
 	{
 	case AppObj::colision:                 //si colisiona, empieza a suicidarse
-		suicide();
-		follAnim_ = Suicide;
-		switchAnim();
+		if (suic == nullptr) {
+			suicide();
+			follAnim_ = Suicide;
+			switchAnim();
+		}
 		break;
 	default:
 		break;
@@ -150,6 +154,8 @@ void Sinbad::switchAnim()
 		animState->setLoop(true);
 		animStateAux->setEnabled(true);
 		animStateAux->setLoop(true);
+		draw_swords->setEnabled(true);
+		draw_swords->setLoop(true);
 
 		entity->detachObjectFromBone(swordR);                 //cambia las espadas de posicion
 		entity->attachObjectToBone("Handle.R", swordR);
