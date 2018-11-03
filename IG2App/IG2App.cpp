@@ -169,7 +169,7 @@ void IG2App::setupScene(void)
   colisionables.push_back({ actors.back(), mSM->getEntity("bomb") });       //guardamos la entity de bomba en el vector de colisionables
 
 //-------------------------------------------TOY---------------------------------------
-  toy = mGridNode->createChildSceneNode("toy");
+  toy = mGridNode->createChildSceneNode("toy");  //cuello, nodo vacio
   actors.push_back(new Toy(toy));
   toy->setPosition(-400, 100, 0);
   addInputListener(actors.back()); //lo añadimos como listener para que reciba los eventos de teclado
