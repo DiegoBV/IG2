@@ -34,6 +34,12 @@ Sinbad::Sinbad(Ogre::SceneNode * node): AppObj(node)
 		animState->setEnabled(true);
 		animState->setLoop(true);
 	}
+
+	/*AnimationStateSet * aux = entity->getAllAnimationStates();                                //muestra el nombre de todas las animaciones de Sinbad (descomentar para consultar)
+	auto it = aux->getAnimationStateIterator().begin();
+	cout << endl << endl << "ANIMACIONES DE SINBAD: " << endl;
+	while (it != aux->getAnimationStateIterator().end()) { cout << it->first << " "; ++it; }
+	cout << endl << endl;*/
 }
 
 void Sinbad::frameRendered(const Ogre::FrameEvent & evt)
