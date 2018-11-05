@@ -7,9 +7,12 @@
 #include <OgreSceneNode.h>
 #include <OgreCameraMan.h>
 #include <OgreAnimation.h>
+#include <OgreSkeleton.h>
 #include <OgreKeyFrame.h>
 #include <OgreEntity.h>
 #include <OgreTrays.h>
+#include <OgreMesh.h>
+#include <OgreBone.h>
 #include <iostream>
 #include <vector>
 

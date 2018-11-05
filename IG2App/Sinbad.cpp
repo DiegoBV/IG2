@@ -40,6 +40,12 @@ Sinbad::Sinbad(Ogre::SceneNode * node): AppObj(node)
 	cout << endl << endl << "ANIMACIONES DE SINBAD: " << endl;
 	while (it != aux->getAnimationStateIterator().end()) { cout << it->first << " "; ++it; }
 	cout << endl << endl;*/
+
+	/*cout << endl << endl << "HUESOS DE SINBAD: " << endl;                                     //muestra el nombre de todos los huesos de Sinbad (descomentar para consultar)
+	auto skeleton = entity->getMesh()->getSkeleton();
+	auto numBones = skeleton->getNumBones();
+	for (int i = 0; i < numBones; i++) { cout << skeleton->getBone(i)->getName() << " "; }
+	cout << endl << endl;*/
 }
 
 void Sinbad::frameRendered(const Ogre::FrameEvent & evt)
@@ -206,7 +212,7 @@ void Sinbad::createWalk()
 
 	Vector3 src(0, 0, 1);                                                   //para las rotaciones
 	Vector3 dest(0, 0, 1);
-	Quaternion quat = src.getRotationTo(dest);
+	Quaternion quat;
 
 	longitudPaso = animDuration / 8;
 	int i = 0;
@@ -259,7 +265,6 @@ void Sinbad::createWalk()
 	quat = src.getRotationTo(dest);
 	kf->setRotation(quat);
 	kf->setTranslate(keyFramePos);
-	kf->setRotation(quat);
 
 //-----------------------------------Octavo Frame---------------------
 	kf = track->createNodeKeyFrame(longitudPaso * i++);
