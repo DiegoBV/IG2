@@ -144,6 +144,7 @@ void IG2App::setupScene(void)
 
   actors.push_back(new Mirror(mSM->getRootSceneNode(), "mGrid", "Plano", mCamNode));
   mGridNode = dynamic_cast<Mirror*>(actors.back())->getMirror();
+  actors.back()->setName("mirror");
   //mGridNode->showBoundingBox(true);
 
 
@@ -159,6 +160,7 @@ void IG2App::setupScene(void)
   mSinbadNode = sin->getSinbad();
   AppObj::addAppListener(actors.back());  //añadimos como listener de eventos --> colision
   addInputListener(actors.back());
+  actors.back()->setName("Sinbad");
  
  //-------------------------------------------BOMBA---------------------------------------
 
@@ -166,6 +168,7 @@ void IG2App::setupScene(void)
   actors.push_back(new Bomb(bomba));
   addInputListener(actors.back());
   AppObj::addAppListener(actors.back());
+  actors.back()->setName("bomb");
   colisionables.push_back({ actors.back(), mSM->getEntity("bomb") });       //guardamos la entity de bomba en el vector de colisionables
 
 //-------------------------------------------TOY---------------------------------------
@@ -174,6 +177,7 @@ void IG2App::setupScene(void)
   toy->setPosition(-400, 100, 0);
   addInputListener(actors.back()); //lo añadimos como listener para que reciba los eventos de teclado
   AppObj::addAppListener(actors.back());
+  actors.back()->setName("toy");
   colisionables.push_back({ actors.back(), mSM->getEntity("body") });     //guardamos la entity del cuerpo en el vector de colisionables
 
 //----------------------------------CAMARA--------------------------------------

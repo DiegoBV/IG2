@@ -28,6 +28,8 @@ public:
 	};
 
 protected:
+	string name;
+
 	Ogre::SceneNode* pNode;                                                                                                         //nodo padre del objeto
 
 	std::vector<Ogre::SceneNode*> children;                                                                                        //lista de hijos del nodo padre
@@ -59,11 +61,15 @@ public:
 
 	inline Ogre::Node* getChild(std::string name) { return pNode->getChild(name); };                                             //devuelve un hijo por el nombre
 
-	inline Ogre::SceneNode* getMainNode() { return pNode; };                                                                     //devuelve el padre
+	inline Ogre::SceneNode* getMainNode() { return pNode; }; //devuelve el padre 
+	
+	inline string getName() const { return name; };
 
 //------------------------------------------------------------SETS-----------------------------------------------
 
 	inline void setMaterial(std::string child, std::string material) {                                                           //cambia el material de un hijo por el nombre indicado
-		pNode->getCreator()->getEntity(child)->setMaterialName(material); };    
+		pNode->getCreator()->getEntity(child)->setMaterialName(material); }; 
+
+	inline void setName(string n) { name = n; };
 };
 

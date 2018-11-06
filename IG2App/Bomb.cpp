@@ -74,7 +74,9 @@ void Bomb::receiveEvent(Eventos evnt, AppObj * sender)
 	switch (evnt)
 	{
 	case AppObj::colision:
-		smoke->setEmitting(true);        //activa el humo
+		if (sender->getName() == this->name || sender->getName() == "toy") {
+			smoke->setEmitting(true);        //activa el humo
+		}
 		break;
 	default:
 		break;

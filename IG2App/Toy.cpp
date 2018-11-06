@@ -63,12 +63,14 @@ void Toy::receiveEvent(Eventos evnt, AppObj * sender)
 	switch (evnt)
 	{
 	case AppObj::colision:                                           //hacemos invisible el objeto entero
-		pNode->getCreator()->getEntity("body")->setVisible(false);
-		pNode->getCreator()->getEntity("head")->setVisible(false);
-		pNode->getCreator()->getEntity("rEye")->setVisible(false);
-		pNode->getCreator()->getEntity("lEye")->setVisible(false);
-		pNode->getCreator()->getEntity("bButton")->setVisible(false);
-		on = false;
+		if (sender->getName() == this->name || sender->getName() == "bomb") {
+			pNode->getCreator()->getEntity("body")->setVisible(false);
+			pNode->getCreator()->getEntity("head")->setVisible(false);
+			pNode->getCreator()->getEntity("rEye")->setVisible(false);
+			pNode->getCreator()->getEntity("lEye")->setVisible(false);
+			pNode->getCreator()->getEntity("bButton")->setVisible(false);
+			on = false;
+		}
 		break;
 	default:
 		break;

@@ -109,9 +109,11 @@ void Sinbad::receiveEvent(Eventos evnt, AppObj * sender)
 	{
 	case AppObj::colision:                 //si colisiona, empieza a suicidarse
 		if (suic == nullptr) {
-			suicide();
-			follAnim_ = Suicide;
-			switchAnim();
+			if (sender->getName() == "toy" || sender->getName() == "bomb") {
+				suicide();
+				follAnim_ = Suicide;
+				switchAnim();
+			}
 		}
 		break;
 	default:
