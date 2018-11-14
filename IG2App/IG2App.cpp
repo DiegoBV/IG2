@@ -140,9 +140,9 @@ void IG2App::setupScene(void)
 
   // finally something to render
 
-//-------------------------------------------PLANO---------------------------------------
+//-------------------------------------------MIRROR---------------------------------------
 
-  actors.push_back(new Mirror(mSM->getRootSceneNode(), "mGrid", "Plano", mCamNode));
+  actors.push_back(new Mirror(mSM->getRootSceneNode(), "mGrid", "Plano", true, mCamNode));
   mGridNode = dynamic_cast<Mirror*>(actors.back())->getMirror();
   actors.back()->setName("mirror");
   //mGridNode->showBoundingBox(true);
@@ -180,6 +180,9 @@ void IG2App::setupScene(void)
   actors.back()->setName("toy");
   colisionables.push_back({ actors.back(), mSM->getEntity("body") });     //guardamos la entity del cuerpo en el vector de colisionables
 
+//-----------------------------------------FONDO-----------------------------------------
+  mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -200), "ejemploShadersE2", 1, 1, true, 1, 100, 10);
+  
 //----------------------------------CAMARA--------------------------------------
 
   mCamMgr = new OgreBites::CameraMan(mCamNode);

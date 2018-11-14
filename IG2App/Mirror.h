@@ -34,22 +34,21 @@ private:
 
 	TextureUnitState* tu;
 
-
 	ColourValue def_Ambient;
-
-	void setReflection(SceneNode* camNode);
 
 public:
 	Mirror();
 
 	virtual ~Mirror();
 
-	Mirror(Ogre::SceneNode* node, std::string name, std::string material, SceneNode* camNode = nullptr);
+	Mirror(Ogre::SceneNode* node, std::string name, std::string material, bool reflejos = true, SceneNode* camNode = nullptr);
 
 	inline SceneNode* getMirror() { return mGridNode; };
 
 	virtual void preRenderTargetUpdate(const Ogre::RenderTargetEvent& evt);                                //util para evitar que el espejo se refleje a sí mismo
 
 	virtual void postRenderTargetUpdate(const Ogre::RenderTargetEvent& evt);
+
+	void setReflection(SceneNode* camNode);
 };
 

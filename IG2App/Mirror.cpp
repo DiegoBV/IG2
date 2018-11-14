@@ -60,16 +60,17 @@ Mirror::~Mirror()
 	delete mp;
 }
 
-Mirror::Mirror(Ogre::SceneNode * node, std::string name, std::string material, SceneNode* camNode): AppObj(node), name(name)
+Mirror::Mirror(Ogre::SceneNode * node, std::string name, std::string material, bool reflejos, SceneNode* camNode): AppObj(node), name(name)
 {
-	Ogre::MeshManager::getSingleton().createPlane("mPlane1080x800", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
+	Ogre::MeshManager::getSingleton().createPlane(name, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, 
 		Ogre::Plane(Ogre::Vector3::UNIT_Y, 0), 1080, 800, 100, 80, true, 1, 1.0, 1.0, Ogre::Vector3::NEGATIVE_UNIT_Z);                    //crea el mesh del plano
 
-	mGridNode = addChild(name, "mPlane1080x800");          //anyade como hijo del nodo pNode la mesh y la guardamos en una variable para facilitar el acceso
+	mGridNode = addChild(name, name);          //anyade como hijo del nodo pNode la mesh y la guardamos en una variable para facilitar el acceso
 
 	setMaterial(name, material);                           //le cambiamos el material al script guardado en media
 
-	setReflection(camNode);                               //activamos los reflejos
+	if(reflejos)
+		setReflection(camNode);                               //activamos los reflejos
 
 	planoAux = mGridNode->getCreator()->getEntity(name);  //guardamos la entidad
 
