@@ -181,7 +181,7 @@ void IG2App::setupScene(void)
   colisionables.push_back({ actors.back(), mSM->getEntity("body") });     //guardamos la entity del cuerpo en el vector de colisionables
 
 //-----------------------------------------FONDO-----------------------------------------
-  mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -200), "ejemploShadersE2", 1, 1, true, 1, 100, 10);
+  mSM->setSkyPlane(true, Plane(Vector3::UNIT_Z, -100), "mandelbrot1", 1, 1, true, 1, 100, 10);
   
 //----------------------------------CAMARA--------------------------------------
 

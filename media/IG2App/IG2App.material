@@ -13,25 +13,26 @@ material Plano {
     }
 }
 
-vertex_program_ref vertexShaderE2 glsl
+vertex_program vertexShaderE2 glsl
 { // params ‐> default_params
     source vertexShaderE2glsl.txt // archivo del código
     default_params // valores para las variable uniform
     {
         param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto timeA time_0_1 10
     }
 }
     
 
-fragment_program_ref fragmentShaderE2 glsl
+fragment_program fragmentShaderE2 glsl
 { // params ‐> default_params
     source fragmentShaderE2glsl.txt // archivo
     default_params // valores para las variable uniform
     {
         param_named textura1 int 0 // unidad de textura
         param_named textura2 int 1
-        param_named FB float 0.5
-        param_named intLuz float 1.0
+        //param_named FB float 0.5
+        //param_named intLuz float 1.0
     }
 }
 
@@ -49,8 +50,8 @@ material ejemploShadersE2 {
         }
 
         texture_unit texture1 {
-            texture 1d_debug.png 2d // archivo
-            tex_address_mode clamp
+            texture spaceSky.jpg 2d // archivo
+            //tex_address_mode clamp
             filtering bilinear
         }
 

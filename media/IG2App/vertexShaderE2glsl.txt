@@ -6,14 +6,15 @@ in vec2 uv0;
 
 uniform mat4 modelViewProjMat; // constantes de programa
 
-out vec2 vUv0; // out del vertex shader
+uniform float timeA;
 
-out vec2 s;
+out vec2 vUv0; // out del vertex shader
+out vec2 vUv1;
 
 void main() {
-    s.x += 0.5;
-    s.y += 0.5;
-
     vUv0 = uv0;
+    vUv1 = uv0;
+    vUv1.s = ((vUv0.s - 0.5)*timeA)+0.5;
+    vUv1.t = ((vUv0.t - 0.5)*timeA)+0.5;
     gl_Position = modelViewProjMat * vertex; // obligatorio
 }
