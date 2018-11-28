@@ -4,13 +4,15 @@
 Toy::Toy(Ogre::SceneNode * node): AppObj(node)                                          //crea todos los nodos y entidades de toy
 {
 	//cuerpo
-	body = addChild("body", "sphere.mesh");                      //crea el nodo del cuerpo, con padre pNode (pNode en toy es un nodo hijo vacio del plano)
+	body = addChild("body", "uv_sphere.mesh");                      //crea el nodo del cuerpo, con padre pNode (pNode en toy es un nodo hijo vacio del plano)
 	bodyEnt = pNode->getCreator()->getEntity("body");           //guardamos la entidad de body para las colisiones
+	setMaterial("body", "Toy");
 
 	//cabeza
-	head = addChild("head", "sphere.mesh");                    //igual que el body
+	head = addChild("head", "uv_sphere.mesh");                    //igual que el body
 	head->setPosition(0, 140, 0);
 	head->setScale(body->getInitialScale().x * 0.5, body->getInitialScale().y * 0.5, body->getInitialScale().z * 0.5);    //cambios en escala y posicion para que adquiera la forma que queremos
+	setMaterial("head", "Toy");
 
 	//ojo derecho
 	Ogre::SceneNode* rEye = addChild("rEye", "sphere.mesh", head);    //crea el nodo del ojo derecho con padre head

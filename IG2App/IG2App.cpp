@@ -187,7 +187,10 @@ void IG2App::setupScene(void)
 
   mCamMgr = new OgreBites::CameraMan(mCamNode);
   addInputListener(mCamMgr);
-  mCamMgr->setStyle(OgreBites::CS_ORBIT);  
+  mCamMgr->setStyle(OgreBites::CS_ORBIT);
+
+//-------------------------------VIEWPORT/COMPOSITOR-----------------------------
+  CompositorManager::getSingleton().addCompositor(vp, "Luminance");
   //mCamMgr->setTarget(mSinbadNode);  
   //mCamMgr->setYawPitchDist(Radian(0), Degree(30), 100);
 

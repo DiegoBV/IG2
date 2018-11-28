@@ -1,0 +1,46 @@
+#version 330 core
+
+in vec3 Normal; // en world space,tiene que llamarse diferente de "normal" porq eso los pilla de ogre
+
+in vec2 TexCoords;
+
+uniform vec4 lightPos; // position en world space
+uniform vec4 intLuz;
+
+uniform sampler2D textura1; // tipo sampler2D para texturas 2D
+
+out vec4 fFragColor; // out del fragment shader
+
+void main() { // los struct no los usamos en Ogre
+
+    //-----------------------------Luces---------------------------------
+    
+    // diffuse
+
+    vec3 norm;
+    if(gl_FrontFacing)
+        norm = normalize(Normal); //si esta por fuera...
+    else{
+        norm = -normalize(Normal); //si esta por dentro...
+    }
+
+    vec3 lightDir = normalize(vec3(lightPos));
+    
+    float diff = max(dot(norm, lightDir), 0.0);
+    
+    vec3 diffuse = vec3(intLuz) * diff;
+
+    //-----------------------------END_Luces---------------------------------
+    
+
+    //-----------------------------Agujeros---------------------------------
+    vec3 color = vec3(texture(textura1, TexCoords));
+       
+    if(color.x > 0.55) discard;
+
+    if(gl_FrontFacing)
+        fFragColor = vec4(vec3(1.0,0.0,0.5) * diffuse, 1.0);
+    else fFragColor = vec4(vec3(0.0,1.0,0.0) * diffuse, 1.0);
+    //----------------------------END_AGUJEROS------------------------------
+}
+// GLSL también permite utilizar arrays y funciones

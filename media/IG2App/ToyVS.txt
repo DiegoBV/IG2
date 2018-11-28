@@ -1,0 +1,20 @@
+#version 330 core // learnopengl.com
+
+in vec4 vertex;
+in vec3 normal;
+in vec2 uv0;
+
+out vec3 Normal;
+out vec2 TexCoords;
+
+uniform mat4 modelViewProjMat;
+
+uniform mat4 inverseTranspose;
+
+void main() {
+
+    Normal = mat3(inverseTranspose) * normal;
+    TexCoords = uv0;
+
+    gl_Position = modelViewProjMat * vertex;
+}

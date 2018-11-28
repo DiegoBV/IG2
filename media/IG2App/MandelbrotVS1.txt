@@ -18,6 +18,8 @@ void main(){
     
     vUv1.s = ((vUv0.s )*timeA);
     vUv1.t = ((vUv0.t )*timeA);
-
+    
+    vUv0 = uv0;
+    
     gl_Position = modelViewProjMat * vertex;
 }
