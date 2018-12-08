@@ -21,6 +21,10 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
   else if (evt.keysym.sym == SDLK_p) {        //rotamos el plano
 	  rotateGrid();
   }
+  else if (evt.keysym.sym == SDLK_i) {        //rotamos el plano
+	  if(!flag)
+		interference();
+  }
   else if ((evt.keysym.sym == SDLK_c)) {    //cambiamos el target de la camara
 
 	  flag = !flag;
@@ -36,6 +40,14 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt)
 void IG2App::frameRendered(const Ogre::FrameEvent & evt)
 {
 	checkCollisions();
+	if (flag) {
+		interferenceTime -= evt.timeSinceLastFrame;
+		cout << interferenceTime<<endl;
+		if (interferenceTime <= 0) {
+			interference();
+			interferenceTime = 300;
+		}
+	}
 }
 
 void IG2App::checkCollisions()                                     //si se da colision entre dos objetos en el vector, lanza el evento de que se ha producido una colision
@@ -61,6 +73,12 @@ void IG2App::checkCollisions()                                     //si se da co
 void IG2App::rotateGrid() //rota el plano
 {
 	mGridNode->pitch(Ogre::Radian(0.1));
+}
+
+void IG2App::interference()
+{
+		flag = !flag;
+		CompositorManager::getSingleton().setCompositorEnabled(vp, compositor, flag);
 }
 
 void IG2App::shutdown()
@@ -118,7 +136,7 @@ void IG2App::setupScene(void)
   //mCamNode->setDirection(Ogre::Vector3(0, 0, -1));  
   
   // and tell it to render into the main window
-  Viewport* vp = getRenderWindow()->addViewport(cam);
+  vp = getRenderWindow()->addViewport(cam);
   //vp->setBackgroundColour(Ogre::ColourValue(1, 1, 1));
 
   //------------------------------------------------------------------------
@@ -189,8 +207,14 @@ void IG2App::setupScene(void)
   addInputListener(mCamMgr);
   mCamMgr->setStyle(OgreBites::CS_ORBIT);
 
-//-------------------------------VIEWPORT/COMPOSITOR-----------------------------
-  CompositorManager::getSingleton().addCompositor(vp, "Luminance");
+//-------------------------------VIEWPORT/COMPOSITOR (BLANCO Y NEGRO)-----------------------------
+  //CompositorManager::getSingleton().addCompositor(vp, "Luminance");
+ //CompositorManager::getSingleton().setCompositorEnabled(vp, "Luminance", true);
+
+  //-------------------------------VIEWPORT/COMPOSITOR (INTERFERENCE)-----------------------------
+  CompositorManager::getSingleton().addCompositor(vp, "Interference");
+  CompositorManager::getSingleton().setCompositorEnabled(vp, "Interference", false);
+
   //mCamMgr->setTarget(mSinbadNode);  
   //mCamMgr->setYawPitchDist(Radian(0), Degree(30), 100);
 

@@ -29,6 +29,7 @@ protected:
   void checkCollisions();
 
   void rotateGrid();
+  void interference();
    
   //nodos del arbol de recursos
   SceneManager* mSM = nullptr;
@@ -40,6 +41,10 @@ protected:
   SceneNode* toy = nullptr;
   SceneNode* bomba = nullptr;
   OgreBites::CameraMan* mCamMgr = nullptr;
+  string compositor = "Interference";
+  Viewport* vp = nullptr;
+
+  int interferenceTime = 300;
 
   std::vector<pair<AppObj*, Entity*>> colisionables;
 

@@ -12,9 +12,9 @@ compositor Luminance{ //nombre
             input none //start without initializing
 
             pass render_quad{ //render a fullscreen quad with
-                material LuminancePS //the luminance materialinput 0  RTT0 //the luminance material
+                material LuminanceMat //the luminance material
+                input 0  RTT0 //the luminance material
             }    //para usar la textura en el fragment shader del material
         }
     }
-
 }
